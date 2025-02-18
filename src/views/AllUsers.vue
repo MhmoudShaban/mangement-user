@@ -8,7 +8,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
-          v-model="search"
+          v-model="debouncedSearch"
           :loading="loading"
           append-inner-icon="mdi-magnify"
           density="compact"
@@ -66,12 +66,14 @@ const filteredUsers = computed(() => {
       user.username.toLowerCase().startsWith(search.value.toLowerCase()),
   )
 })
-const debounceSearch = debounce((value) => {
-  search.value = value
-}, 400)
-watch(search, (newval) => {
-  debounceSearch(newval)
-})
+
+const debouncedSearch = ref('')
+watch(
+  debouncedSearch,
+  debounce((newval) => {
+    search.value = newval
+  }, 400),
+)
 
 onMounted(() => {
   fetchUsers()
