@@ -68,7 +68,7 @@ const filteredUsers = computed(() => {
 })
 const debounceSearch = debounce((value) => {
   search.value = value
-})
+}, 400)
 watch(search, (newval) => {
   debounceSearch(newval)
 })
